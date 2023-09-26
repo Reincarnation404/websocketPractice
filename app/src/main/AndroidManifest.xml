@@ -12,10 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="31">
-        <service
-            android:name=".wsClient.JWebSocketClientService"
-            android:enabled="true"
-            android:exported="true" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

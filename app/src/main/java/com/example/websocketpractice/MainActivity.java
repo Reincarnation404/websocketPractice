@@ -5,24 +5,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.websocketpractice.adapter.Adapter_ChatMessage;
 import com.example.websocketpractice.databinding.ActivityMainBinding;
 import com.example.websocketpractice.model.ChatMessage;
-import com.example.websocketpractice.wsClient.JWebSocketClient;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -33,7 +28,7 @@ import tech.gusavila92.websocketclient.WebSocketClient;
 
 public class MainActivity extends AppCompatActivity {
 
-    private JWebSocketClient client;
+    private WebSocketClient client;
 //    private JWebSocketClientService jWebSClientService;
     private ActivityMainBinding binding;
 
@@ -154,60 +149,6 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(chatMessageReceiver, filter);
     }
 
-//    private void  createWebSocketClient(){
-//        URI uri;
-//        try {
-//            uri = new URI("ws://192.168.1.103");
-//        } catch (URISyntaxException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        webSocketClient = new WebSocketClient(uri) {
-//            @Override
-//            public void onOpen() {
-//                Log.i("WebSocket","Session is starting");
-//                webSocketClient.send("Hello World!");
-//            }
-//
-//            @Override
-//            public void onTextReceived(String message) {
-//                Log.i("WebSocket", "Message received");
-//
-//
-//            }
-//
-//            @Override
-//            public void onBinaryReceived(byte[] data) {
-//
-//            }
-//
-//            @Override
-//            public void onPingReceived(byte[] data) {
-//
-//            }
-//
-//            @Override
-//            public void onPongReceived(byte[] data) {
-//
-//            }
-//
-//            @Override
-//            public void onException(Exception e) {
-//                System.out.println(e.getMessage());
-//            }
-//
-//            @Override
-//            public void onCloseReceived() {
-//                Log.i("WebSocket", "Closed ");
-//                System.out.println("onCloseReceived");
-//            }
-//        };
-//
-//        webSocketClient.setConnectTimeout(10000);
-//        webSocketClient.setReadTimeout(60000);
-//        webSocketClient.enableAutomaticReconnection(5000);
-//        webSocketClient.connect();
-//    }
 
     private void initChatMsgListView(){
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -238,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        client = new JWebSocketClient(uri) {
+        client = new WebSocketClient(uri) {
             @Override
             public void onOpen() {
                 Log.i("WebSocket", "Session is starting");
