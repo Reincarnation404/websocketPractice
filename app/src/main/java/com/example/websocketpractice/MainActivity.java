@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //    };
 
+
     private class ChatMessageReceiver extends BroadcastReceiver {
 
         @Override
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 //        startJWebSClientService();
 //        //绑定service
 //        bindService();
+
         //廣播註冊
         doRegisterReceiver();
 
@@ -141,11 +143,13 @@ public class MainActivity extends AppCompatActivity {
 //        startService(intent);
 //    }
     /**
-     * 動態註冊廣播 收到廣播後 才會發出收到對方訊息的intent 才會更新view
+     * 動態註冊廣播 收到廣播後 才會呼叫onReceive & 更新view
      */
     private void doRegisterReceiver() {
         chatMessageReceiver = new ChatMessageReceiver();
+        //用IntentFilter設置接收的事件類型為自訂事件(收到訊息)
         IntentFilter filter = new IntentFilter("com.xch.servicecallback.content");
+        //動態註冊廣播
         registerReceiver(chatMessageReceiver, filter);
     }
 
@@ -155,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         adapter_chatMessage = new Adapter_ChatMessage(this, chatMessageList);
         recyclerView.setAdapter(adapter_chatMessage);
-
     }
 
     private void findViewById() {
@@ -180,12 +183,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         client = new WebSocketClient(uri) {
+
+            //握手後,ws可以傳&收資料時呼叫
             @Override
             public void onOpen() {
                 Log.i("WebSocket", "Session is starting");
               //  client.send("Hello World!");
             }
 
+            //收到文字訊息時呼叫
             @Override
             public void onTextReceived(String s) {
                 Log.i("WebSocket", "Message received");
@@ -197,23 +203,28 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
+            //收到Binary Message(ex:圖片)時呼叫
             @Override
             public void onBinaryReceived(byte[] data) {
             }
 
+            //
             @Override
             public void onPingReceived(byte[] data) {
             }
 
+            //
             @Override
             public void onPongReceived(byte[] data) {
             }
 
+            //發生例外時呼叫
             @Override
             public void onException(Exception e) {
                 System.out.println(e.getMessage());
             }
 
+            //連線關閉時呼叫
             @Override
             public void onCloseReceived() {
                 Log.i("WebSocket", "Closed ");
